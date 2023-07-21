@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import ToDoForm from './components/Todo-form';
+import Todo from './components/Todo';
+import { useState } from 'react';
 
 function App() {
+
+  const [tasks, setTasks] = useState([]);
+  
+
+  const addTask = (newTask) =>{
+    console.log(newTask)
+    setTasks(currentTask => ([...currentTask, newTask]))
+  }
+
+  const deleteTask = id => {
+    let left = tasks.slice(0,id)
+    let right = tasks.slice(id+1)
+    setTasks(left.concat(right))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ToDoForm addFunction = {addTask} />
+      {tasks.map((task, i)=>{
+        return(
+        < Todo 
+        id={i} 
+        task={task} 
+        deleteFunction = {deleteTask}
+        />)})}
     </div>
   );
 }
